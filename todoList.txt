@@ -1,0 +1,9 @@
+different shapes
+	refactor the code too
+
+decaying
+	should they all be decaying? or decay randomly?
+
+other creatures?
+
+obstacles?
