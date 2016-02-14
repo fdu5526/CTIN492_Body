@@ -10,18 +10,27 @@ public abstract class Circle : MonoBehaviour {
 	protected Collider2D collider2d;
 	protected float lifespan;
 
+	bool isDead;
+
 	// Use this for initialization
 	protected virtual void Awake () {
 		rigidbody2d = GetComponent<Rigidbody2D>();
 		collider2d = GetComponent<Collider2D>();
+		isDead = false;
 	}
 
 
 	protected void ComputeLifeSpan () {
-		if (lifespan <= 0f) {
-			GameManager.RemoveGameObject(this.gameObject);
-		} else {
-			lifespan -= Time.deltaTime;
+		if (!isDead) {
+			if (lifespan <= 0f) {
+				isDead = true;
+				rigidbody2d.enabled = false;
+				collider2d.enabled = false;
+				GameManager.RemoveGameObject(this.gameObject);
+			} else {
+				lifespan -= Time.deltaTime;
+			}
 		}
+		
 	}
 }
