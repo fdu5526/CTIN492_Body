@@ -9,11 +9,17 @@ public class MainCamera : MonoBehaviour {
 	void Start () {
 		player = GameObject.Find("Player").gameObject;
 	}
+
+	public void SetNewPlayer (GameObject g) {
+		player = g;
+	}
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-		Vector3 pp = player.transform.position;
-		GetComponent<Transform>().position = new Vector3(pp.x, pp.y, -10f);
+		Vector2 pp = player.transform.position;
+		Vector2 tp = transform.position;
+		tp = Vector2.Lerp(tp, pp, 0.5f);
+		GetComponent<Transform>().position = new Vector3(tp.x, tp.y, -10f);
 
 	}
 }

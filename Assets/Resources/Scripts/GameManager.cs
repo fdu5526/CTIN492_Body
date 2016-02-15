@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour {
 				playerParts.Remove(g);
 				Destroy(g.GetComponent<ConsumablePart>());
 				g.AddComponent<Player>();
+				GameObject.Find("Main Camera").GetComponent<MainCamera>().SetNewPlayer(g);
 			} else {
 				//TODO game over
 			}
