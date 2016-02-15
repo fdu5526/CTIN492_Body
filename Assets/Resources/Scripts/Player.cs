@@ -1,8 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[RequireComponent (typeof (Rigidbody2D))]
-[RequireComponent (typeof (Collider2D))]
 public class Player : CreaturePart {
 
 	float speed = 3f;

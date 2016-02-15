@@ -1,8 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[RequireComponent (typeof (Rigidbody2D))]
-[RequireComponent (typeof (Collider2D))]
 public class ConsumablePart : CreaturePart {
 
 	// Use this for initialization
@@ -32,6 +30,12 @@ public class ConsumablePart : CreaturePart {
 			GetComponent<HingeJoint2D>().connectedBody = other.GetComponent<Rigidbody2D>();
 			this.gameObject.layer = Global.layerPlayer;
 			GameManager.AddGameObject(this.gameObject);
+
+			ConsumablePart c = other.gameObject.GetComponent<ConsumablePart>();
+			if (c != null) {
+				c.AttachPart(this);
+			}
+
 			audios[0].Play();
 		}
 	}

@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 [RequireComponent (typeof (Rigidbody2D))]
 [RequireComponent (typeof (Collider2D))]
+[RequireComponent (typeof (HingeJoint2D))]
 public abstract class CreaturePart : MonoBehaviour {
 
 	protected Rigidbody2D rigidbody2d;
@@ -11,9 +13,11 @@ public abstract class CreaturePart : MonoBehaviour {
 	protected AudioSource[] audios;
 	protected float lifespan;
 
+	bool isAttached;
 	bool isDead;
 	Color origColor;
 	
+	List<CreaturePart> attachedparts;
 
 	// Use this for initialization
 	protected virtual void Awake () {
@@ -26,7 +30,23 @@ public abstract class CreaturePart : MonoBehaviour {
 		origColor = GetComponent<SpriteRenderer>().color;
 		audios = GetComponents<AudioSource>();
 		isDead = false;
+		isAttached = false;
+		attachedparts = new List<CreaturePart>();
+	}
 
+	public void AttachPart (CreaturePart c) {
+		isAttached = true;
+		attachedparts.Add(c);
+	}
+
+	public void DetachPart () {
+		if (isAttached) {
+			for (int i = 0; i < attachedparts.Count; i++) {
+				attachedparts[i].DetachPart();
+				GetComponent<HingeJoint2D>().enabled = false;
+			}
+			isAttached = false;
+		}
 	}
 
 	protected virtual void Die () { }
@@ -48,7 +68,7 @@ public abstract class CreaturePart : MonoBehaviour {
 				}
 				GameManager.RemoveGameObject(this.gameObject);
 				Die();
-			} else {
+			} else if (isAttached) {
 				lifespan -= Time.deltaTime;
 				ComputeColor();
 			}
