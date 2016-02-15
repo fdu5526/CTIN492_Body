@@ -14,6 +14,7 @@ public class Player : Circle {
 	protected override void Awake () {
 		base.Awake();
 		inputs = new bool[inputStrings.Length];
+		lifespan = 20f;
 	}
 
 	// given vector, change facing direction to that way
@@ -21,6 +22,11 @@ public class Player : Circle {
 		float origZ = rigidbody2d.rotation;
 		float targetZ = Global.Angle(Vector2.down, d);
   	rigidbody2d.rotation = Mathf.LerpAngle(origZ, targetZ, 0.3f);
+	}
+
+	protected override void Die () {
+		GameManager.FindNewPlayer();
+		Destroy(this);
 	}
 
 	void FixedUpdate () {
@@ -39,6 +45,7 @@ public class Player : Circle {
 		}
 		rigidbody2d.velocity = new Vector2(dx, dy);
 		FaceDirection(rigidbody2d.velocity);
+		//ComputeLifeSpan();
 	}
 	
 	

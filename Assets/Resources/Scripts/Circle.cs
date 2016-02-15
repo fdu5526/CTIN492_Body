@@ -7,29 +7,51 @@ public abstract class Circle : MonoBehaviour {
 
 	protected Rigidbody2D rigidbody2d;
 	protected Collider2D collider2d;
+	protected Collider2D trigger2d;
+	protected AudioSource[] audios;
 	protected float lifespan;
 
 	bool isDead;
+	Color origColor;
+	
 
 	// Use this for initialization
 	protected virtual void Awake () {
 		rigidbody2d = GetComponent<Rigidbody2D>();
-		collider2d = GetComponent<Collider2D>();
+		Collider2D[] c = GetComponents<Collider2D>();
+		collider2d = c[0];
+		if (c.Length > 1) {
+			trigger2d = c[1];
+		}
+		origColor = GetComponent<SpriteRenderer>().color;
+		audios = GetComponents<AudioSource>();
 		isDead = false;
+
 	}
 
+	protected virtual void Die () { }
+
+	void ComputeColor () {
+		if (lifespan < 5f) {;
+			GetComponent<SpriteRenderer>().color = Color.Lerp(origColor, Color.black, 1f - (lifespan / 5f));
+
+		}
+	}
 
 	protected void ComputeLifeSpan () {
 		if (!isDead) {
 			if (lifespan <= 0f) {
 				isDead = true;
-				rigidbody2d.enabled = false;
 				collider2d.enabled = false;
+				if (trigger2d != null) {
+					trigger2d.enabled = false;
+				}
 				GameManager.RemoveGameObject(this.gameObject);
+				Die();
 			} else {
 				lifespan -= Time.deltaTime;
+				ComputeColor();
 			}
 		}
-		
 	}
 }
