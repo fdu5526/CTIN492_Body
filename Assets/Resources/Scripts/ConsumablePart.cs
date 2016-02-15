@@ -3,7 +3,7 @@ using System.Collections;
 
 [RequireComponent (typeof (Rigidbody2D))]
 [RequireComponent (typeof (Collider2D))]
-public class ConsumableCircle : Circle {
+public class ConsumablePart : CreaturePart {
 
 	// Use this for initialization
 	protected override void Awake () {

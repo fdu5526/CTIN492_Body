@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour {
 		if (playerParts.Count > 0) {
 				GameObject g = playerParts[0];
 				playerParts.Remove(g);
-				Destroy(g.GetComponent<ConsumableCircle>());
+				Destroy(g.GetComponent<ConsumablePart>());
 				g.AddComponent<Player>();
 			} else {
 				//TODO game over

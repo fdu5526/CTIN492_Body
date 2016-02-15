@@ -3,8 +3,7 @@ using System.Collections;
 
 [RequireComponent (typeof (Rigidbody2D))]
 [RequireComponent (typeof (Collider2D))]
-public class Player : Circle {
-
+public class Player : CreaturePart {
 
 	float speed = 3f;
 	string[] inputStrings = {"w", "a", "s", "d"};
@@ -45,7 +44,7 @@ public class Player : Circle {
 		}
 		rigidbody2d.velocity = new Vector2(dx, dy);
 		FaceDirection(rigidbody2d.velocity);
-		//ComputeLifeSpan();
+		ComputeLifeSpan();
 	}
 	
 	

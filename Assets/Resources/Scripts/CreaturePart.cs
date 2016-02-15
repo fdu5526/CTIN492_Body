@@ -3,7 +3,7 @@ using System.Collections;
 
 [RequireComponent (typeof (Rigidbody2D))]
 [RequireComponent (typeof (Collider2D))]
-public abstract class Circle : MonoBehaviour {
+public abstract class CreaturePart : MonoBehaviour {
 
 	protected Rigidbody2D rigidbody2d;
 	protected Collider2D collider2d;
@@ -32,8 +32,8 @@ public abstract class Circle : MonoBehaviour {
 	protected virtual void Die () { }
 
 	void ComputeColor () {
-		if (lifespan < 5f) {;
-			GetComponent<SpriteRenderer>().color = Color.Lerp(origColor, Color.black, 1f - (lifespan / 5f));
+		if (lifespan < 10f) {;
+			GetComponent<SpriteRenderer>().color = Color.Lerp(origColor, Color.black, 1f - (lifespan / 10f));
 
 		}
 	}
