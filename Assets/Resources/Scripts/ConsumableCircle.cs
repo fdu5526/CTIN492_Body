@@ -11,13 +11,15 @@ public class ConsumableCircle : Circle {
 		transform.localScale = new Vector2(lifespan/100f, lifespan/100f);
 
 		float a = GetComponent<SpriteRenderer>().color.a;
-		GetComponent<SpriteRenderer>().color = new Color(Random.value, Random.value, Random.value, a);
+		GetComponent<SpriteRenderer>().color = new Color(RandomColorValue, RandomColorValue, RandomColorValue, a);
 		base.Awake();
 	}
 
 	protected override void Die () {
 		GetComponent<HingeJoint2D>().enabled = false;
 	}
+
+	float RandomColorValue { get { return UnityEngine.Random.Range(0.3f, 1f); } }
 
 	float RandomLifeSpan { get { return UnityEngine.Random.Range(5, 18f); } }
 	
