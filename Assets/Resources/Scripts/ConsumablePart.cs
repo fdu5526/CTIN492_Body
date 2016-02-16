@@ -15,7 +15,7 @@ public class ConsumablePart : CreaturePart {
 
 	protected override void Die () {
 		DetachParts();
-		GameManager.RecomputePlayerParts();
+		//GameManager.RecomputePlayerParts();
 	}
 
 	float RandomColorValue { get { return UnityEngine.Random.Range(0.3f, 1f); } }

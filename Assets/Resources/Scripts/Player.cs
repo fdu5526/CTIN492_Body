@@ -24,8 +24,9 @@ public class Player : CreaturePart {
 	}
 
 	protected override void Die () {
-		GameManager.FindNewPlayer();
+		GameManager.SetPlayerParts(AllParts);
 		DetachParts();
+		GameManager.FindNewPlayer();
 		Destroy(this);
 	}
 

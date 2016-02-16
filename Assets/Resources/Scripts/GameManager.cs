@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class GameManager : MonoBehaviour {
 
 	static GameObject player;
+	static List<GameObject> globalGlayerParts;
 
 	public static void SetPlayer (GameObject g) {
 		player = g;
@@ -15,6 +16,7 @@ public class GameManager : MonoBehaviour {
 		Object[] allC = Object.FindObjectsOfType(typeof(CreaturePart));
 		for (int i = 0; i < allC.Length; i++) {
 			CreaturePart c = (CreaturePart)allC[i];
+			c.ActivateAttach(false);
 			c.gameObject.layer = 0;
 		}
 
@@ -23,10 +25,19 @@ public class GameManager : MonoBehaviour {
 			playerParts[i].gameObject.layer = Global.layerPlayer;
 		}
 
+		for (int i = 0; i < allC.Length; i++) {
+			CreaturePart c = (CreaturePart)allC[i];
+			c.ActivateAttach(true);
+		}
+
+	}
+
+	public static void SetPlayerParts (List<GameObject> l) {
+		globalGlayerParts = new List<GameObject>(l);
 	}
 
 	public static void FindNewPlayer () {
-		List<GameObject> playerParts = player.GetComponent<CreaturePart>().AllParts;
+		List<GameObject> playerParts = globalGlayerParts;
 		if (playerParts.Count > 0) {
 				// find the best player
 				GameObject g = playerParts[0];
@@ -40,24 +51,21 @@ public class GameManager : MonoBehaviour {
 				}
 				// store important info
 				player = g;
-				player.layer = Global.layerPlayer;
 				float l = player.GetComponent<ConsumablePart>().Lifespan;
 				List<CreaturePart> npp = player.GetComponent<CreaturePart>().attachedparts;
 
 				// destroy the old
+				player.GetComponent<CreaturePart>().ActivateAttach(false);
 				Destroy(player.GetComponent<ConsumablePart>());
-				Destroy(player.GetComponents<Collider2D>()[1]);
 
 				// transfer data
 				player.AddComponent<Player>();
 				player.GetComponent<Player>().Lifespan = l;
 				player.GetComponent<Player>().attachedparts = npp;
-				
-				// set everything in player blob to be player layer
-				playerParts = player.GetComponent<CreaturePart>().AllParts;
-				for (int i = 0; i < playerParts.Count; i++) {
-					playerParts[i].layer = Global.layerPlayer;
-				}
+
+				// reset layer informations
+				RecomputePlayerParts();
+				player.layer = Global.layerPlayer;
 
 				// set the camera
 				GameObject.Find("Main Camera").GetComponent<MainCamera>().SetNewPlayer(player);

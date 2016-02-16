@@ -54,12 +54,17 @@ public abstract class CreaturePart : MonoBehaviour {
 	public List<GameObject> AllParts {
 		get {
 			List<GameObject> a = new List<GameObject>();
-			print(attachedparts.Count);
 			for (int i = 0; i < attachedparts.Count; i++) {
 				a.AddRange(attachedparts[i].AllParts);
 				a.Add(attachedparts[i].gameObject);
 			}
 			return a;
+		}
+	}
+
+	public void ActivateAttach (bool active) {
+		if (trigger2d != null) {
+			trigger2d.enabled = active;
 		}
 	}
 
