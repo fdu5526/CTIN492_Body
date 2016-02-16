@@ -19,7 +19,7 @@ public abstract class CreaturePart : MonoBehaviour {
 	
 	Color origColor;
 	
-	List<CreaturePart> attachedparts;
+	public List<CreaturePart> attachedparts;
 
 	// Use this for initialization
 	protected virtual void Awake () {
@@ -44,17 +44,12 @@ public abstract class CreaturePart : MonoBehaviour {
 	public bool IsAttachedToRealCreature {
 		get { return isAttachedToRealCreature; }
 		set {
-			Debug.Assert(value != isAttachedToRealCreature);
-			if (value) {
-				this.gameObject.layer = Global.layerPlayer;
-			} else {
-				this.gameObject.layer = 0;
-			}
 			isAttachedToRealCreature = value; 
 		}
 	}
 
 	public bool IsDead { get { return isDead; } }
+
 
 	public void AttachPart (CreaturePart c) {
 		attachedparts.Add(c);
@@ -79,6 +74,7 @@ public abstract class CreaturePart : MonoBehaviour {
 			attachedparts[i].NoLongerOnPlayer();
 		}
 		IsAttachedToRealCreature = false;
+		this.gameObject.layer = 0;
 	}
 
 	public void Detach () {
@@ -115,7 +111,6 @@ public abstract class CreaturePart : MonoBehaviour {
 				}
 				PrepareToDie();
 				Die();
-				DetachParts();
 			} else if (IsAttachedToRealCreature) {
 				lifespan -= Time.deltaTime;
 				ComputeColor();

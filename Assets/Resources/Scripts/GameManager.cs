@@ -24,12 +24,15 @@ public class GameManager : MonoBehaviour {
 					}
 				}
 				player = g;
+				player.layer = Global.layerPlayer;
+				List<CreaturePart> npp = player.GetComponent<CreaturePart>().attachedparts;
 
 				float l = player.GetComponent<ConsumablePart>().Lifespan;
 				Destroy(player.GetComponent<ConsumablePart>());
 				Destroy(player.GetComponents<Collider2D>()[1]);
 				player.AddComponent<Player>();
 				player.GetComponent<Player>().Lifespan = l;
+				player.GetComponent<Player>().attachedparts = npp;
 				GameObject.Find("Main Camera").GetComponent<MainCamera>().SetNewPlayer(player);
 			} else {
 				//TODO game over

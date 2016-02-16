@@ -14,11 +14,11 @@ public class ConsumablePart : CreaturePart {
 	}
 	
 	protected override void PrepareToDie () {
-		
+		NoLongerOnPlayer();
 	}
 
 	protected override void Die () {
-		NoLongerOnPlayer();
+		DetachParts();
 	}
 
 	float RandomColorValue { get { return UnityEngine.Random.Range(0.3f, 1f); } }
