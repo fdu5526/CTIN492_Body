@@ -22,7 +22,7 @@ public class ConsumablePart : CreaturePart {
 
 	float RandomAnchorValue { get { return UnityEngine.Random.Range(2.5f, 3.5f); } }
 
-	float RandomLifeSpan { get { return UnityEngine.Random.Range(5, 18f); } }
+	float RandomLifeSpan { get { return UnityEngine.Random.Range(12f, 24f); } }
 	
 	bool Attached { get { return GetComponent<HingeJoint2D>().enabled; } }
 
@@ -32,7 +32,9 @@ public class ConsumablePart : CreaturePart {
 		if (other.gameObject.layer == Global.layerPlayer && !Attached) {
 			GetComponent<HingeJoint2D>().enabled = true;
 			GetComponent<HingeJoint2D>().connectedBody = other.GetComponent<Rigidbody2D>();
-			GetComponent<HingeJoint2D>().connectedAnchor = new Vector2(RandomAnchorValue, RandomAnchorValue);
+
+			Vector2 d = (other.transform.position - transform.position);
+			GetComponent<HingeJoint2D>().connectedAnchor = 4f * d;
 			ActivateAttach(false);
 			CreaturePart c = other.gameObject.GetComponent<CreaturePart>();
 			if (c != null) {

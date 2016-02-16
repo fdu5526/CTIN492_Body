@@ -39,12 +39,11 @@ public class GameManager : MonoBehaviour {
 				GameObject g = playerParts[0];
 				float maxLife = g.GetComponent<CreaturePart>().Lifespan;
 				for (int i = 1; i < playerParts.Count; i++) {
-					playerParts[i].layer = 0;
 					if (playerParts[i].GetComponent<CreaturePart>().Lifespan > maxLife) {
 						g = playerParts[i];
 						maxLife = playerParts[i].GetComponent<CreaturePart>().Lifespan;
-					}
 				}
+					}
 				// store important info
 				player = g;
 				float l = player.GetComponent<ConsumablePart>().Lifespan;

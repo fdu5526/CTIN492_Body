@@ -10,7 +10,7 @@ public class Player : CreaturePart {
 	// Use this for initialization
 	protected override void Awake () {
 		inputs = new bool[inputStrings.Length];
-		lifespan = 5f;
+		lifespan = 20f;
 		base.Awake();
 		GameManager.SetPlayer(this.gameObject);
 		this.gameObject.layer = Global.layerPlayer;
