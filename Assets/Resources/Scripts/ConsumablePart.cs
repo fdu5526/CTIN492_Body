@@ -11,16 +11,19 @@ public class ConsumablePart : CreaturePart {
 		float a = GetComponent<SpriteRenderer>().color.a;
 		GetComponent<SpriteRenderer>().color = new Color(RandomColorValue, RandomColorValue, RandomColorValue, a);
 		base.Awake();
+
+		rigidbody2d.velocity = new Vector2(RandomSpeed, RandomSpeed);
+
 	}
 
 	protected override void Die () {
 		DetachParts(true);
-		//GameManager.RecomputePlayerParts();
+		GameManager.RecomputePlayerParts();
 	}
 
 	float RandomColorValue { get { return UnityEngine.Random.Range(0.3f, 1f); } }
 
-	float RandomAnchorValue { get { return UnityEngine.Random.Range(2.5f, 3.5f); } }
+	float RandomSpeed { get { return UnityEngine.Random.Range(-1f, 1f); } }
 
 	float RandomLifeSpan { get { return UnityEngine.Random.Range(12f, 24f); } }
 	

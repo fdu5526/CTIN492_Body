@@ -20,10 +20,11 @@ public class GameManager : MonoBehaviour {
 			c.gameObject.layer = 0;
 		}
 
-		List<GameObject> playerParts = player.GetComponent<CreaturePart>().AllParts;
+		List<GameObject> playerParts = player.GetComponent<CreaturePart>().AllParts(0);
 		for (int i = 0; i < playerParts.Count; i++) {
 			playerParts[i].gameObject.layer = Global.layerPlayer;
 		}
+		player.gameObject.layer = Global.layerPlayer;
 
 		for (int i = 0; i < allC.Length; i++) {
 			CreaturePart c = (CreaturePart)allC[i];
@@ -33,15 +34,16 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public static void FindNewPlayer () {
-		List<GameObject> playerParts = player.GetComponent<CreaturePart>().AllParts;
+		List<GameObject> playerParts = player.GetComponent<CreaturePart>().AllParts(0);
 		if (playerParts.Count > 0) {
 				// find the best player
 				GameObject g = playerParts[0];
-				float maxLife = g.GetComponent<CreaturePart>().Lifespan;
+				float maxLife = g.GetComponent<CreaturePart>().PartsSize;
 				for (int i = 1; i < playerParts.Count; i++) {
-					if (playerParts[i].GetComponent<CreaturePart>().Lifespan > maxLife) {
+					if (playerParts[i].GetComponent<CreaturePart>().PartsSize > maxLife) {
 						g = playerParts[i];
-						maxLife = playerParts[i].GetComponent<CreaturePart>().Lifespan;
+						g.layer = 0;
+						maxLife = playerParts[i].GetComponent<CreaturePart>().PartsSize;
 				}
 					}
 				// store important info
@@ -59,7 +61,7 @@ public class GameManager : MonoBehaviour {
 				player.GetComponent<Player>().attachedparts = npp;
 
 				// reset layer informations
-				playerParts = player.GetComponent<CreaturePart>().AllParts;
+				playerParts = player.GetComponent<CreaturePart>().AllParts(0);
 				for (int i = 0; i < playerParts.Count; i++) {
 					playerParts[i].gameObject.layer = Global.layerPlayer;
 				}

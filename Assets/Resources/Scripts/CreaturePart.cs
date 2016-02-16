@@ -45,21 +45,26 @@ public abstract class CreaturePart : MonoBehaviour {
 
 	public bool IsDead { get { return isDead; } }
 
+	public int PartsSize { get { return attachedparts.Count; } }
+
 
 	public void AttachPart (CreaturePart c) {
 		attachedparts.Add(c);
 	}
 
 	// get all the parts latched onto this one
-	public List<GameObject> AllParts {
-		get {
-			List<GameObject> a = new List<GameObject>();
+	public List<GameObject> AllParts (int layer) {
+		int maxLayers = 10;
+		List<GameObject> a = new List<GameObject>();
+		if (layer < maxLayers) {
 			for (int i = 0; i < attachedparts.Count; i++) {
-				a.AddRange(attachedparts[i].AllParts);
-				a.Add(attachedparts[i].gameObject);
+				if (attachedparts[i] != null) {
+					a.AddRange(attachedparts[i].AllParts(layer+1));
+					a.Add(attachedparts[i].gameObject);
+				}
 			}
-			return a;
 		}
+		return a;
 	}
 
 	public void ActivateAttach (bool active) {
@@ -101,6 +106,7 @@ public abstract class CreaturePart : MonoBehaviour {
 		if (!isDead) {
 			if (lifespan <= 0f) {
 				isDead = true;
+				rigidbody2d.drag = 0.5f;
 				this.gameObject.layer = Global.layerDead;
 				Die();
 			} else if (IsAttachedToRealCreature) {
