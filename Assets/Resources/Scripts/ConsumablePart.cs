@@ -12,9 +12,13 @@ public class ConsumablePart : CreaturePart {
 		GetComponent<SpriteRenderer>().color = new Color(RandomColorValue, RandomColorValue, RandomColorValue, a);
 		base.Awake();
 	}
+	
+	protected override void PrepareToDie () {
+		
+	}
 
 	protected override void Die () {
-		GetComponent<HingeJoint2D>().enabled = false;
+		NoLongerOnPlayer();
 	}
 
 	float RandomColorValue { get { return UnityEngine.Random.Range(0.3f, 1f); } }
@@ -25,16 +29,15 @@ public class ConsumablePart : CreaturePart {
 
 
 	void OnTriggerEnter2D (Collider2D other) {
+		// this attaches to other
 		if (other.gameObject.layer == Global.layerPlayer && !Attached) {
 			GetComponent<HingeJoint2D>().enabled = true;
 			GetComponent<HingeJoint2D>().connectedBody = other.GetComponent<Rigidbody2D>();
-			this.gameObject.layer = Global.layerPlayer;
-			GameManager.AddGameObject(this.gameObject);
-
-			ConsumablePart c = other.gameObject.GetComponent<ConsumablePart>();
+			CreaturePart c = other.gameObject.GetComponent<CreaturePart>();
 			if (c != null) {
 				c.AttachPart(this);
 			}
+			this.IsAttachedToRealCreature = true;
 
 			audios[0].Play();
 		}

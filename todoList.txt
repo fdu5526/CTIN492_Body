@@ -11,3 +11,6 @@ obstacles?
 sound effects
 
 procedural world generation
+
+
+set random seed

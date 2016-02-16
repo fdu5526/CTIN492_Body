@@ -12,9 +12,11 @@ public abstract class CreaturePart : MonoBehaviour {
 	protected Collider2D trigger2d;
 	protected AudioSource[] audios;
 	protected float lifespan;
-
-	bool isAttached;
+	protected bool isAttachedToRealCreature;
+	
+	
 	bool isDead;
+	
 	Color origColor;
 	
 	List<CreaturePart> attachedparts;
@@ -30,25 +32,70 @@ public abstract class CreaturePart : MonoBehaviour {
 		origColor = GetComponent<SpriteRenderer>().color;
 		audios = GetComponents<AudioSource>();
 		isDead = false;
-		isAttached = false;
 		attachedparts = new List<CreaturePart>();
 	}
 
-	public void AttachPart (CreaturePart c) {
-		isAttached = true;
-		attachedparts.Add(c);
+
+	public float Lifespan {
+		get { return lifespan; }
+		set { lifespan = value; }
 	}
 
-	public void DetachPart () {
-		if (isAttached) {
-			for (int i = 0; i < attachedparts.Count; i++) {
-				attachedparts[i].DetachPart();
-				GetComponent<HingeJoint2D>().enabled = false;
+	public bool IsAttachedToRealCreature {
+		get { return isAttachedToRealCreature; }
+		set {
+			Debug.Assert(value != isAttachedToRealCreature);
+			if (value) {
+				this.gameObject.layer = Global.layerPlayer;
+			} else {
+				this.gameObject.layer = 0;
 			}
-			isAttached = false;
+			isAttachedToRealCreature = value; 
 		}
 	}
 
+	public bool IsDead { get { return isDead; } }
+
+	public void AttachPart (CreaturePart c) {
+		attachedparts.Add(c);
+	}
+
+	// get all the parts latched onto this one
+	public List<GameObject> AllParts {
+		get {
+			List<GameObject> a = new List<GameObject>();
+			for (int i = 0; i < attachedparts.Count; i++) {
+				a.AddRange(attachedparts[i].AllParts);
+				a.Add(attachedparts[i].gameObject);
+			}
+			return a;
+		}
+	}
+
+	public void NoLongerOnPlayer () {
+		Debug.Assert(IsAttachedToRealCreature);
+
+		for (int i = 0; i < attachedparts.Count; i++) {
+			attachedparts[i].NoLongerOnPlayer();
+		}
+		IsAttachedToRealCreature = false;
+	}
+
+	public void Detach () {
+		IsAttachedToRealCreature = false;
+		GetComponent<HingeJoint2D>().connectedBody = null;
+		GetComponent<HingeJoint2D>().enabled = false;
+	}
+
+	public void DetachParts () {
+		for (int i = 0; i < attachedparts.Count; i++) {
+			attachedparts[i].Detach();
+		}
+		attachedparts.Clear();
+		Detach();
+	}
+
+	protected virtual void PrepareToDie () { }
 	protected virtual void Die () { }
 
 	void ComputeColor () {
@@ -66,9 +113,10 @@ public abstract class CreaturePart : MonoBehaviour {
 				if (trigger2d != null) {
 					trigger2d.enabled = false;
 				}
-				GameManager.RemoveGameObject(this.gameObject);
+				PrepareToDie();
 				Die();
-			} else if (isAttached) {
+				DetachParts();
+			} else if (IsAttachedToRealCreature) {
 				lifespan -= Time.deltaTime;
 				ComputeColor();
 			}

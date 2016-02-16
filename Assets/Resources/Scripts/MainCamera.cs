@@ -18,7 +18,7 @@ public class MainCamera : MonoBehaviour {
 	void FixedUpdate () {
 		Vector2 pp = player.transform.position;
 		Vector2 tp = transform.position;
-		tp = Vector2.Lerp(tp, pp, 0.5f);
+		tp = Vector2.Lerp(tp, pp, 0.2f);
 		GetComponent<Transform>().position = new Vector3(tp.x, tp.y, -10f);
 
 	}
