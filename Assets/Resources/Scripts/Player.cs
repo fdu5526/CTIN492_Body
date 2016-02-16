@@ -12,8 +12,8 @@ public class Player : CreaturePart {
 		inputs = new bool[inputStrings.Length];
 		lifespan = 5f;
 		base.Awake();
-		isAttachedToRealCreature = true;
 		GameManager.SetPlayer(this.gameObject);
+		this.gameObject.layer = Global.layerPlayer;
 	}
 
 	// given vector, change facing direction to that way
@@ -23,8 +23,6 @@ public class Player : CreaturePart {
   	rigidbody2d.rotation = Mathf.LerpAngle(origZ, targetZ, 0.3f);
 	}
 
-	protected override void PrepareToDie () {
-	}
 	protected override void Die () {
 		GameManager.FindNewPlayer();
 		DetachParts();

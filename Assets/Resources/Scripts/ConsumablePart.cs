@@ -12,13 +12,10 @@ public class ConsumablePart : CreaturePart {
 		GetComponent<SpriteRenderer>().color = new Color(RandomColorValue, RandomColorValue, RandomColorValue, a);
 		base.Awake();
 	}
-	
-	protected override void PrepareToDie () {
-		NoLongerOnPlayer();
-	}
 
 	protected override void Die () {
 		DetachParts();
+		GameManager.RecomputePlayerParts();
 	}
 
 	float RandomColorValue { get { return UnityEngine.Random.Range(0.3f, 1f); } }
@@ -37,7 +34,7 @@ public class ConsumablePart : CreaturePart {
 			if (c != null) {
 				c.AttachPart(this);
 			}
-			this.IsAttachedToRealCreature = true;
+			this.gameObject.layer = Global.layerPlayer;
 
 			audios[0].Play();
 		}

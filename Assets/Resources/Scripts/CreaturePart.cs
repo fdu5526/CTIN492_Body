@@ -11,9 +11,7 @@ public abstract class CreaturePart : MonoBehaviour {
 	protected Collider2D collider2d;
 	protected Collider2D trigger2d;
 	protected AudioSource[] audios;
-	protected float lifespan;
-	protected bool isAttachedToRealCreature;
-	
+	protected float lifespan;	
 	
 	bool isDead;
 	
@@ -42,10 +40,7 @@ public abstract class CreaturePart : MonoBehaviour {
 	}
 
 	public bool IsAttachedToRealCreature {
-		get { return isAttachedToRealCreature; }
-		set {
-			isAttachedToRealCreature = value; 
-		}
+		get { return gameObject.layer == Global.layerPlayer; }
 	}
 
 	public bool IsDead { get { return isDead; } }
@@ -59,6 +54,7 @@ public abstract class CreaturePart : MonoBehaviour {
 	public List<GameObject> AllParts {
 		get {
 			List<GameObject> a = new List<GameObject>();
+			print(attachedparts.Count);
 			for (int i = 0; i < attachedparts.Count; i++) {
 				a.AddRange(attachedparts[i].AllParts);
 				a.Add(attachedparts[i].gameObject);
@@ -67,18 +63,7 @@ public abstract class CreaturePart : MonoBehaviour {
 		}
 	}
 
-	public void NoLongerOnPlayer () {
-		Debug.Assert(IsAttachedToRealCreature);
-
-		for (int i = 0; i < attachedparts.Count; i++) {
-			attachedparts[i].NoLongerOnPlayer();
-		}
-		IsAttachedToRealCreature = false;
-		this.gameObject.layer = 0;
-	}
-
 	public void Detach () {
-		IsAttachedToRealCreature = false;
 		GetComponent<HingeJoint2D>().connectedBody = null;
 		GetComponent<HingeJoint2D>().enabled = false;
 	}
@@ -91,13 +76,11 @@ public abstract class CreaturePart : MonoBehaviour {
 		Detach();
 	}
 
-	protected virtual void PrepareToDie () { }
 	protected virtual void Die () { }
 
 	void ComputeColor () {
 		if (lifespan < 10f) {;
 			GetComponent<SpriteRenderer>().color = Color.Lerp(origColor, Color.black, 1f - (lifespan / 10f));
-
 		}
 	}
 
@@ -109,7 +92,6 @@ public abstract class CreaturePart : MonoBehaviour {
 				if (trigger2d != null) {
 					trigger2d.enabled = false;
 				}
-				PrepareToDie();
 				Die();
 			} else if (IsAttachedToRealCreature) {
 				lifespan -= Time.deltaTime;
