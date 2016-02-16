@@ -14,11 +14,13 @@ public class ConsumablePart : CreaturePart {
 	}
 
 	protected override void Die () {
-		DetachParts();
+		DetachParts(true);
 		//GameManager.RecomputePlayerParts();
 	}
 
 	float RandomColorValue { get { return UnityEngine.Random.Range(0.3f, 1f); } }
+
+	float RandomAnchorValue { get { return UnityEngine.Random.Range(2.5f, 3.5f); } }
 
 	float RandomLifeSpan { get { return UnityEngine.Random.Range(5, 18f); } }
 	
@@ -30,6 +32,8 @@ public class ConsumablePart : CreaturePart {
 		if (other.gameObject.layer == Global.layerPlayer && !Attached) {
 			GetComponent<HingeJoint2D>().enabled = true;
 			GetComponent<HingeJoint2D>().connectedBody = other.GetComponent<Rigidbody2D>();
+			GetComponent<HingeJoint2D>().connectedAnchor = new Vector2(RandomAnchorValue, RandomAnchorValue);
+
 			CreaturePart c = other.gameObject.GetComponent<CreaturePart>();
 			if (c != null) {
 				c.AttachPart(this);

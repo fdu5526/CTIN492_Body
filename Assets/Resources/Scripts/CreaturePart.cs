@@ -73,11 +73,16 @@ public abstract class CreaturePart : MonoBehaviour {
 		GetComponent<HingeJoint2D>().enabled = false;
 	}
 
-	public void DetachParts () {
+	public void DetachParts (bool shouldClear) {
 		for (int i = 0; i < attachedparts.Count; i++) {
-			attachedparts[i].Detach();
+			if (attachedparts[i] != null) {
+				attachedparts[i].Detach();
+			}
 		}
-		attachedparts.Clear();
+		if (shouldClear) {
+			attachedparts.Clear();
+		}
+		
 		Detach();
 	}
 
@@ -93,10 +98,7 @@ public abstract class CreaturePart : MonoBehaviour {
 		if (!isDead) {
 			if (lifespan <= 0f) {
 				isDead = true;
-				collider2d.enabled = false;
-				if (trigger2d != null) {
-					trigger2d.enabled = false;
-				}
+				this.gameObject.layer = Global.layerDead;
 				Die();
 			} else if (IsAttachedToRealCreature) {
 				lifespan -= Time.deltaTime;

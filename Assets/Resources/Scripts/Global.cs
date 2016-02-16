@@ -13,7 +13,7 @@ public class Global
 {
 	// hardcoded layer numbers
 	public const int layerPlayer = 8;
-	public const int layerEnemy = 9;
+	public const int layerDead = 9;
 
 	public static bool FiftyFifty { get { return UnityEngine.Random.value > 0.5f; } }
 	

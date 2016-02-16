@@ -32,12 +32,8 @@ public class GameManager : MonoBehaviour {
 
 	}
 
-	public static void SetPlayerParts (List<GameObject> l) {
-		globalGlayerParts = new List<GameObject>(l);
-	}
-
 	public static void FindNewPlayer () {
-		List<GameObject> playerParts = globalGlayerParts;
+		List<GameObject> playerParts = player.GetComponent<CreaturePart>().AllParts;
 		if (playerParts.Count > 0) {
 				// find the best player
 				GameObject g = playerParts[0];
