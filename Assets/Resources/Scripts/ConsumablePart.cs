@@ -18,7 +18,7 @@ public class ConsumablePart : CreaturePart {
 
 	protected override void Die () {
 		DetachParts(true);
-		GameManager.RecomputePlayerParts();
+		//GameManager.RecomputePlayerParts();
 	}
 
 	float RandomColorValue { get { return UnityEngine.Random.Range(0.3f, 1f); } }
@@ -46,6 +46,8 @@ public class ConsumablePart : CreaturePart {
 			this.gameObject.layer = Global.layerPlayer;
 
 			audios[0].Play();
+
+			GameManager.IncreaseConsumedCircleCount();
 		}
 	}
 	

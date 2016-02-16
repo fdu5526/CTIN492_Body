@@ -5,12 +5,22 @@ using System.Collections.Generic;
 public class GameManager : MonoBehaviour {
 
 	static GameObject player;
-	static List<GameObject> globalGlayerParts;
+
+	static int numConsumedCircles = 0;
+	static int numPlayerScriptTransfer = 0;
 
 	public static void SetPlayer (GameObject g) {
 		player = g;
 	}
 
+	public static void IncreaseConsumedCircleCount () {
+		numConsumedCircles++;
+	}
+
+	public static void Reset () {
+		numConsumedCircles = 0;
+		numPlayerScriptTransfer = 0;
+	}
 
 	public static void RecomputePlayerParts () {
 		Object[] allC = Object.FindObjectsOfType(typeof(CreaturePart));
@@ -34,16 +44,17 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public static void FindNewPlayer () {
+		numPlayerScriptTransfer++;
 		List<GameObject> playerParts = player.GetComponent<CreaturePart>().AllParts(0);
 		if (playerParts.Count > 0) {
 				// find the best player
 				GameObject g = playerParts[0];
-				float maxLife = g.GetComponent<CreaturePart>().PartsSize;
+				float maxLife = g.GetComponent<CreaturePart>().Lifespan;
 				for (int i = 1; i < playerParts.Count; i++) {
-					if (playerParts[i].GetComponent<CreaturePart>().PartsSize > maxLife) {
+					if (playerParts[i].GetComponent<CreaturePart>().Lifespan > maxLife) {
 						g = playerParts[i];
 						g.layer = 0;
-						maxLife = playerParts[i].GetComponent<CreaturePart>().PartsSize;
+						maxLife = playerParts[i].GetComponent<CreaturePart>().Lifespan;
 				}
 					}
 				// store important info

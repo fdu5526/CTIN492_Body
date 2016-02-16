@@ -14,6 +14,7 @@ public class LevelManager : MonoBehaviour {
 	void Update () {
 		if (Input.GetKeyUp("r")) {
 			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+			GameManager.Reset();
 		}
 	}
 }
