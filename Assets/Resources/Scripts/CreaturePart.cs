@@ -69,6 +69,9 @@ public abstract class CreaturePart : MonoBehaviour {
 	}
 
 	public void Detach () {
+		if (gameObject.layer != Global.layerDead) {
+			ActivateAttach(true);
+		}
 		GetComponent<HingeJoint2D>().connectedBody = null;
 		GetComponent<HingeJoint2D>().enabled = false;
 	}

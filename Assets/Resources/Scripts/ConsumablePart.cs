@@ -33,7 +33,7 @@ public class ConsumablePart : CreaturePart {
 			GetComponent<HingeJoint2D>().enabled = true;
 			GetComponent<HingeJoint2D>().connectedBody = other.GetComponent<Rigidbody2D>();
 			GetComponent<HingeJoint2D>().connectedAnchor = new Vector2(RandomAnchorValue, RandomAnchorValue);
-
+			ActivateAttach(false);
 			CreaturePart c = other.gameObject.GetComponent<CreaturePart>();
 			if (c != null) {
 				c.AttachPart(this);

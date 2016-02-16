@@ -60,7 +60,10 @@ public class GameManager : MonoBehaviour {
 				player.GetComponent<Player>().attachedparts = npp;
 
 				// reset layer informations
-				RecomputePlayerParts();
+				playerParts = player.GetComponent<CreaturePart>().AllParts;
+				for (int i = 0; i < playerParts.Count; i++) {
+					playerParts[i].gameObject.layer = Global.layerPlayer;
+				}
 				player.layer = Global.layerPlayer;
 
 				// set the camera
