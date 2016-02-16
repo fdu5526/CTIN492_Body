@@ -1,16 +1,3 @@
-different shapes
-	refactor the code too
-
-decaying
-	should they all be decaying? or decay randomly?
-
-other creatures?
+game over/restart
 
 obstacles?
-
-sound effects
-
-procedural world generation
-
-
-set random seed
