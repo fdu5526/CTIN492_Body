@@ -53,7 +53,6 @@ public class GameManager : MonoBehaviour {
 				for (int i = 1; i < playerParts.Count; i++) {
 					if (playerParts[i].GetComponent<CreaturePart>().Lifespan > maxLife) {
 						g = playerParts[i];
-						g.layer = 0;
 						maxLife = playerParts[i].GetComponent<CreaturePart>().Lifespan;
 				}
 					}

@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Player : CreaturePart {
 
-	float speed = 3f;
+	float speed = 4f;
 	string[] inputStrings = {"w", "a", "s", "d"};
 	bool[] inputs;
 

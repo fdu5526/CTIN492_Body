@@ -34,6 +34,8 @@ public class ConsumablePart : CreaturePart {
 	void OnTriggerEnter2D (Collider2D other) {
 		// this attaches to other
 		if (other.gameObject.layer == Global.layerPlayer && !Attached) {
+			rigidbody2d.velocity = Vector2.zero;
+			rigidbody2d.angularVelocity = 0f;
 			GetComponent<HingeJoint2D>().enabled = true;
 			GetComponent<HingeJoint2D>().connectedBody = other.GetComponent<Rigidbody2D>();
 
