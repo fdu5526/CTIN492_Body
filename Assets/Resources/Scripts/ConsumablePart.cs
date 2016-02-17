@@ -9,7 +9,8 @@ public class ConsumablePart : CreaturePart {
 		transform.localScale = new Vector2(lifespan/100f, lifespan/100f);
 
 		float a = GetComponent<SpriteRenderer>().color.a;
-		GetComponent<SpriteRenderer>().color = new Color(RandomColorValue, RandomColorValue, RandomColorValue, a);
+		GetComponent<SpriteRenderer>().color = new Color(0.31f, 0.84f, 0.15f, a);
+		//GetComponent<SpriteRenderer>().color = new Color(RandomColorValue, RandomColorValue, RandomColorValue, a);
 		base.Awake();
 
 		rigidbody2d.velocity = new Vector2(RandomSpeed, RandomSpeed);
