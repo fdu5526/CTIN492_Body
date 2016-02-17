@@ -83,8 +83,7 @@ public class GameManager : MonoBehaviour {
 
 
 			} else {
-				//TODO game over
-				print("game over");
+				GameObject.Find("Canvas").GetComponent<Canvas>().enabled = true;
 			}
 	}
 }
