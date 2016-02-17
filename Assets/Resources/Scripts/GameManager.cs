@@ -6,8 +6,8 @@ public class GameManager : MonoBehaviour {
 
 	static GameObject player;
 
-	static int numConsumedCircles = 0;
-	static int numPlayerScriptTransfer = 0;
+	public static int numConsumedCircles = 0;
+	public static int numPlayerScriptTransfer = 0;
 
 	public static void SetPlayer (GameObject g) {
 		player = g;

@@ -7,6 +7,8 @@ public class Player : CreaturePart {
 	string[] inputStrings = {"w", "a", "s", "d"};
 	bool[] inputs;
 
+	bool disabled;
+
 	// Use this for initialization
 	protected override void Awake () {
 		inputs = new bool[inputStrings.Length];
@@ -14,6 +16,7 @@ public class Player : CreaturePart {
 		base.Awake();
 		GameManager.SetPlayer(this.gameObject);
 		this.gameObject.layer = Global.layerPlayer;
+		disabled = false;
 	}
 
 	// given vector, change facing direction to that way
@@ -29,30 +32,41 @@ public class Player : CreaturePart {
 		Destroy(this);
 	}
 
-	void FixedUpdate () {
-		float dx = 0f;
-		float dy = 0f;
-		if (inputs[0]) {
-			dy = speed;
-		} else if (inputs[2]) {
-			dy = -speed;
-		}
+	public bool Disabled {
+		get { return disabled; }
+		set { disabled = value; }
+		
+	}
 
-		if (inputs[1]) {
-			dx = -speed;
-		} else if (inputs[3]) {
-			dx = speed;
+	void FixedUpdate () {
+		if (!disabled) {
+			float dx = 0f;
+			float dy = 0f;
+			if (inputs[0]) {
+				dy = speed;
+			} else if (inputs[2]) {
+				dy = -speed;
+			}
+
+			if (inputs[1]) {
+				dx = -speed;
+			} else if (inputs[3]) {
+				dx = speed;
+			}
+			rigidbody2d.velocity = new Vector2(dx, dy);
+			FaceDirection(rigidbody2d.velocity);
+			ComputeLifeSpan();
 		}
-		rigidbody2d.velocity = new Vector2(dx, dy);
-		FaceDirection(rigidbody2d.velocity);
-		ComputeLifeSpan();
 	}
 	
 	
 	// Update is called once per frame
 	void Update () {
-		for (int i = 0; i < inputs.Length; i++) {
-			inputs[i] = Input.GetKey(inputStrings[i]);
+		if (!disabled) {
+			for (int i = 0; i < inputs.Length; i++) {
+				inputs[i] = Input.GetKey(inputStrings[i]);
+			}
 		}
+		
 	}
 }
